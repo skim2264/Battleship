@@ -8,6 +8,14 @@ const Gameboard = () => {
   const getBoard = () => board;
 
   const placeShip = (coords, ship) => {
+    //return false if any of the coords already has a ship on it
+    for (coord of coords) {
+      let x = coord[0];
+      let y = coord[1];
+      if (board[x][y] != null) return false;
+    }
+
+    //place ship if all coords are null
     for (coord of coords) {
       let x = coord[0];
       let y = coord[1];

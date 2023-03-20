@@ -39,6 +39,26 @@ test("Places ship at specific coord coordinates by calling Ship factory function
   ).toBe(shipFirstThree);
 });
 
+test("Cannot place ship where there is already a ship", () => {
+  newGameboard.placeShip(
+    [
+      [4, 5],
+      [4, 6],
+    ],
+    shipTwo
+  );
+  expect(
+    newGameboard.placeShip(
+      [
+        [4, 5],
+        [4, 4],
+        [4, 3],
+      ],
+      shipFirstThree
+    )
+  ).toBe(false);
+});
+
 describe("receiveAttack() function", () => {
   beforeEach(() => {
     newGameboard.placeShip(
