@@ -12,8 +12,8 @@ const Player = (name) => {
   };
 
   const autoAttack = (player) => {
-    let x = Math.floor(Math.random() * 9);
-    let y = Math.floor(Math.random() * 9);
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
     let coord = [x, y];
 
     player.playerBoard.receiveAttack(coord);
