@@ -7,6 +7,16 @@ h1 {
   gap: 20px;
 }
 
+#welcomeDiv {
+  background-color: blue;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+//Gameboard
 .boardDiv {
   display: flex;
   flex-direction: column;
@@ -26,6 +36,65 @@ h1 {
   flex: 1 1 20px;
 }
 
+//draggable ships
+.shipsContainerDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+[id="0"] {
+  width: 100px;
+  height: 20px;
+  background-color: grey;
+  border: 1px solid black;
+}
+
+[id="1"] {
+  width: 80px;
+  height: 20px;
+  background-color: grey;
+  border: 1px solid black;
+}
+
+[id="2"] {
+  width: 60px;
+  height: 20px;
+  background-color: grey;
+  border: 1px solid black;
+}
+
+[id="3"] {
+  width: 60px;
+  height: 20px;
+  background-color: grey;
+  border: 1px solid black;
+}
+
+[id="4"] {
+  width: 40px;
+  height: 20px;
+  background-color: grey;
+  border: 1px solid black;
+}
+
+.turnShip {
+  transform: rotate(90deg);
+}
+
+.hoverGrid {
+  background-color: gray;
+}
+
+.invalidGrid {
+  background-color: red;
+}
+
+.dragging {
+  border: 1px solid rgb(121, 26, 139);
+}
+
+//End Game Screen
 .gameOverDiv {
   position: absolute;
   top: 0;
@@ -33,5 +102,4 @@ h1 {
   width: 100%;
   height: 100%;
   background-color: hsla(0, 100%, 70%, 0.3);
-  opacity: 50;
 }
