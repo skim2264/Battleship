@@ -10,36 +10,28 @@ import {
 
 //create computer player
 const player1 = Player("Player1");
+player1.isTurn = true;
 const player2 = Player("Computer");
 
 //create empty gameboards and allow player to choose where to put their ships
 createPlayerBoard(player1);
-//player1.playerBoard.autoPlaceShips();
+//populate random fleet of ships if user presses button
+const randomShipsBut = document.getElementById("randomShips");
+const shipsContainerDiv = document.querySelector(".shipsContainerDiv");
 
-const playGame = () => {
-  //computer autopopulates ships on its gameboard
-  createComputerBoard(player2);
-  player2.playerBoard.autoPlaceShips();
-  //remove shipsDiv from display
-
-  //display gameboards
+randomShipsBut.addEventListener("click", (e) => {
+  player1.playerBoard.autoPlaceShips();
   populatePlayerBoard(player1);
+  shipsContainerDiv.innerHTML = "";
+  randomShipsBut.style.display = "none";
+  createComputerBoard(player2, player1);
+  player2.playerBoard.autoPlaceShips();
   populateComputerBoard(player2);
+});
 
-  //loop through game turn by turn
-  while (!player1.playerBoard.allSunk() && !player2.playerBoard.allSunk()) {
-    player1.autoAttack(player2);
-    populateComputerBoard(player2);
-
-    if (player1.playerBoard.allSunk() || player2.playerBoard.allSunk()) break;
-    player2.autoAttack(player1);
-    populatePlayerBoard(player1);
-  }
-
-  //end game once one player's ship has all sunk
-  if (player1.playerBoard.allSunk()) {
-    winScreen(player2);
-  } else if (player2.playerBoard.allSunk()) {
-    winScreen(player1);
-  }
+export const playGame = () => {
+  //computer autopopulates ships on its gameboard
+  createComputerBoard(player2, player1);
+  player2.playerBoard.autoPlaceShips();
+  populateComputerBoard(player2);
 };

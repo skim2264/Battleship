@@ -1,13 +1,36 @@
 import Ship from "./ship";
-import Gameboard from "./gameboard";
+import { playGame } from "./main";
+//import { autoPlaceShips } from "./gameboard";
+//import Player from "./player";
 
 const main = document.querySelector("#main");
 const body = document.querySelector("body");
 
-export const createComputerBoard = (player) => {
+const getCoordFromE = (e, player) => {
+  return e.target.id
+    .replace(player.getName(), "")
+    .split("")
+    .map((str) => Number(str));
+};
+
+export const createComputerBoard = (compPlayer, opp) => {
+  const attack_handler = (e) => {
+    let coord = getCoordFromE(e, compPlayer);
+    if (opp.isTurn) {
+      opp.isTurn = false;
+      opp.attack(compPlayer, coord);
+      populateComputerBoard(compPlayer);
+      if (compPlayer.playerBoard.allSunk()) winScreen(opp);
+      compPlayer.autoAttack(opp);
+      populatePlayerBoard(opp);
+      if (opp.playerBoard.allSunk()) winScreen(compPlayer);
+      opp.isTurn = true;
+    }
+  };
+
   const boardDiv = document.createElement("div");
   boardDiv.classList.add("boardDiv");
-  boardDiv.setAttribute("id", player.getName() + "board");
+  boardDiv.setAttribute("id", compPlayer.getName() + "board");
   main.appendChild(boardDiv);
   for (let i = 0; i < 10; i++) {
     const outerdiv = document.createElement("div");
@@ -16,13 +39,16 @@ export const createComputerBoard = (player) => {
     for (let j = 0; j < 10; j++) {
       const innerdiv = document.createElement("div");
       innerdiv.classList.add("innerdiv");
-      let coord = player.getName() + i.toString() + j.toString();
+      let coord = compPlayer.getName() + i.toString() + j.toString();
       innerdiv.setAttribute("id", coord);
+      innerdiv.addEventListener("click", attack_handler);
+
       outerdiv.appendChild(innerdiv);
     }
   }
 };
 
+//create player board with all event handlers for dragging and dropping ships
 export const createPlayerBoard = (player) => {
   let draggedShip;
   const shipsContainerDiv = document.querySelector(".shipsContainerDiv");
@@ -66,10 +92,7 @@ export const createPlayerBoard = (player) => {
   const dragover_handler = (e) => {
     let coords = configureCoord(
       ships[draggedShip.id],
-      e.target.id
-        .replace(player.getName(), "")
-        .split("")
-        .map((str) => Number(str))
+      getCoordFromE(e, player)
     );
 
     if (coords) {
@@ -89,10 +112,7 @@ export const createPlayerBoard = (player) => {
   };
 
   const drop_handler = (e) => {
-    const startCoord = e.target.id
-      .replace(player.getName(), "")
-      .split("")
-      .map((str) => Number(str));
+    const startCoord = getCoordFromE(e, player);
     const ship = ships[draggedShip.id];
     let coords = configureCoord(ship, startCoord);
     if (!coords) return;
@@ -100,6 +120,12 @@ export const createPlayerBoard = (player) => {
     shipsContainerDiv.removeChild(draggedShip);
 
     populatePlayerBoard(player);
+
+    //if all ships are placed, start the game
+    if (shipsContainerDiv.children.length == 0) {
+      console.log("start");
+      playGame();
+    }
   };
 
   const dragstart_handler = (e) => {
@@ -171,7 +197,7 @@ export const populatePlayerBoard = (player) => {
       let coord = player.getName() + i.toString() + j.toString();
       let square = document.getElementById(coord);
       if (board[i][j] == "miss") {
-        square.style.backgroundColor = "red";
+        square.style.backgroundColor = "grey";
       } else if (board[i][j] == "hit") {
         square.style.backgroundColor = "red";
         square.innerText = "X";

@@ -2,6 +2,7 @@ const Gameboard = require("./gameboard");
 
 const Player = (name) => {
   let playerBoard = Gameboard();
+  let isTurn = false;
 
   const getName = () => name;
 
@@ -20,7 +21,7 @@ const Player = (name) => {
     return coord;
   };
 
-  return { getName, getPlayerBoard, autoAttack, attack, playerBoard };
+  return { getName, getPlayerBoard, autoAttack, attack, playerBoard, isTurn };
 };
 
 module.exports = Player;
