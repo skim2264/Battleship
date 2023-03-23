@@ -13,10 +13,22 @@ const getCoordFromE = (e, player) => {
     .map((str) => Number(str));
 };
 
+//incorporate into code
+const validCoord = (targetPlayer, coord) => {
+  let x = coord[0];
+  let y = coord[1];
+  if (
+    targetPlayer.getPlayerBoard()[x][y] == "hit" ||
+    targetPlayer.getPlayerBoard()[x][y] == "miss"
+  )
+    return false;
+  return true;
+};
+
 export const createComputerBoard = (compPlayer, opp) => {
   const attack_handler = (e) => {
     let coord = getCoordFromE(e, compPlayer);
-    if (opp.isTurn) {
+    if (opp.isTurn && validCoord(compPlayer, coord)) {
       opp.isTurn = false;
       opp.attack(compPlayer, coord);
       populateComputerBoard(compPlayer);
@@ -31,6 +43,14 @@ export const createComputerBoard = (compPlayer, opp) => {
   const boardDiv = document.createElement("div");
   boardDiv.classList.add("boardDiv");
   boardDiv.setAttribute("id", compPlayer.getName() + "board");
+
+  const boardNameDiv = document.createElement("div");
+  boardNameDiv.classList.add("boardNameDiv");
+  const boardName = document.createElement("h2");
+  boardName.innerText = "Enemy Board";
+  boardNameDiv.appendChild(boardName);
+  boardDiv.appendChild(boardNameDiv);
+
   main.appendChild(boardDiv);
   for (let i = 0; i < 10; i++) {
     const outerdiv = document.createElement("div");
@@ -122,8 +142,7 @@ export const createPlayerBoard = (player) => {
     populatePlayerBoard(player);
 
     //if all ships are placed, start the game
-    if (shipsContainerDiv.children.length == 0) {
-      console.log("start");
+    if (shipsContainerDiv.children.length == 1) {
       playGame();
     }
   };
@@ -170,6 +189,14 @@ export const createPlayerBoard = (player) => {
   boardDiv.classList.add("boardDiv");
   boardDiv.setAttribute("id", player.getName() + "board");
   main.appendChild(boardDiv);
+
+  const boardNameDiv = document.createElement("div");
+  boardNameDiv.classList.add("boardNameDiv");
+  const boardName = document.createElement("h2");
+  boardName.innerText = "Your Board";
+  boardNameDiv.appendChild(boardName);
+  boardDiv.appendChild(boardNameDiv);
+
   for (let i = 0; i < 10; i++) {
     const outerdiv = document.createElement("div");
     outerdiv.classList.add("outerdiv");
@@ -186,6 +213,10 @@ export const createPlayerBoard = (player) => {
       innerdiv.addEventListener("drop", drop_handler);
     }
   }
+  const autoButton = document.createElement("button");
+  autoButton.setAttribute("id", "randomShips");
+  autoButton.innerText = "Random Fleet";
+  boardDiv.appendChild(autoButton);
 };
 
 //populate board with data from modules
@@ -197,13 +228,13 @@ export const populatePlayerBoard = (player) => {
       let coord = player.getName() + i.toString() + j.toString();
       let square = document.getElementById(coord);
       if (board[i][j] == "miss") {
-        square.style.backgroundColor = "grey";
+        square.classList.add("miss");
       } else if (board[i][j] == "hit") {
-        square.style.backgroundColor = "red";
-        square.innerText = "X";
+        square.classList.add("hit");
+        square.innerHTML = `<i class="fa-solid fa-xmark fa-2xl"></i>`;
       } else if (board[i][j] == null) {
       } else if (board[i][j].getLength()) {
-        square.style.backgroundColor = "black";
+        square.classList.add("shiponBoard");
       }
     }
   }
@@ -218,11 +249,24 @@ export const populateComputerBoard = (player) => {
       let coord = player.getName() + i.toString() + j.toString();
       let square = document.getElementById(coord);
       if (board[i][j] == "miss") {
-        square.style.backgroundColor = "red";
+        square.classList.add("miss");
       } else if (board[i][j] == "hit") {
-        square.style.backgroundColor = "red";
-        square.innerText = "X";
+        square.classList.add("hit");
+        square.innerHTML = `<i class="fa-solid fa-xmark fa-2xl"></i>`;
       }
+    }
+  }
+};
+
+export const clearBoard = (player) => {
+  let board = player.getPlayerBoard();
+
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      let coord = player.getName() + i.toString() + j.toString();
+      let square = document.getElementById(coord);
+      board[i][j] = null;
+      square.classList.remove("shiponBoard");
     }
   }
 };
