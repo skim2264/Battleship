@@ -6,12 +6,12 @@ import {
   populatePlayerBoard,
   populateComputerBoard,
   clearBoard,
+  winScreen,
 } from "./DOM";
 import "@fortawesome/fontawesome-free/js/fontawesome";
 import "@fortawesome/fontawesome-free/js/solid";
 import "@fortawesome/fontawesome-free/js/regular";
 import "@fortawesome/fontawesome-free/js/brands";
-
 //create computer player
 const player1 = Player("Player1");
 player1.isTurn = true;
