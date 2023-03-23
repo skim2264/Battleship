@@ -1,7 +1,5 @@
 import Ship from "./ship";
 import { playGame } from "./main";
-//import { autoPlaceShips } from "./gameboard";
-//import Player from "./player";
 
 const main = document.querySelector("#main");
 const body = document.querySelector("body");
@@ -14,7 +12,7 @@ const getCoordFromE = (e, player) => {
 };
 
 //incorporate into code
-const validCoord = (targetPlayer, coord) => {
+export const validCoord = (targetPlayer, coord) => {
   let x = coord[0];
   let y = coord[1];
   if (
@@ -232,6 +230,7 @@ export const populatePlayerBoard = (player) => {
       } else if (board[i][j] == "hit") {
         square.classList.add("hit");
         square.innerHTML = `<i class="fa-solid fa-xmark fa-2xl"></i>`;
+        square.classList.remove("shiponBoard");
       } else if (board[i][j] == null) {
       } else if (board[i][j].getLength()) {
         square.classList.add("shiponBoard");
