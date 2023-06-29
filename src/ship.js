@@ -7,13 +7,13 @@ const Ship = (length, hitAmount = 0) => {
     };
   
     const isSunk = () => {
-        if (this.getHitAmount == this.getLength) return true;
+        if (getHitAmount() == getLength()) return true;
         return false;
     };
   
     return {getLength, getHitAmount, hit, isSunk};
   };
   
-  module.exports = Ship;
+module.exports = Ship;
   
   

@@ -19,7 +19,7 @@ module.exports = {
         use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -36,6 +36,19 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: "asset/resource",
       },
+    ],
+  },
+  resolve: {
+    alias: {
+      config$: './configs/app-config.js',
+      react: './vendor/react-master',
+    },
+    extensions: ['.js', '.jsx'],
+    modules: [
+      'node_modules',
+      'bower_components',
+      'shared',
+      '/shared/vendor/modules',
     ],
   },
   plugins: [
