@@ -11,16 +11,24 @@ Battleship game created to practice JavaScript testing through the [Odin Project
 - JavaScript
 - Webpack
 - HTML/CSS
+- Sass
 - Jest
 
 ## Getting Started
-
+1. Clone the repository and install the appropriate modules
 ```
 git clone https://github.com/skim2264/Battleship.git
 cd Battleship
 npm install
-npm start
+npm run build or npm run watch
 ```
+2. Open the index.html in your browser to view the game
+
+## Testing with jest
+```
+npm jest
+```
+
 ## Features
 1. **Classic Battleship Gameplay:** Enjoy a faithful recreation of the classic Battleship game with all its strategic elements and gameplay mechanics.
 2. **User-Friendly Interface:** Experience a user-friendly interface that enhances the gaming experience and makes it easy for players to interact with the game.
